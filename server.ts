@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 
 import globalError from "./src/errors/globalErrors";
+import appError from "./src/middleware/appError";
 import userRoute from "./src/routes/userRoute";
 
 const app = express();
@@ -11,7 +12,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/v1/user", userRoute);
-app.use("/v1/auth", userRoute);
+
+//APP ERRORS
+app.use(appError);
 
 //GLOBAL ERRORS
 globalError(app);
