@@ -1,12 +1,14 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import userModel from "../models/userModel";
 
+import appError from "../middleware/appError";
 import { signJWT, verifyJWT } from "../utils/jwt";
 import { hashPassword, verifyPassword } from "../utils/password";
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let payload = req.body;
+    console.log("payload", payload);
     const isUser = await userModel.find({
       $or: [{ email: { $eq: payload?.email } }, { username: { $eq: payload?.username } }],
     });
@@ -17,18 +19,16 @@ export const signup = async (req: Request, res: Response) => {
     payload = { ...payload, password: hashPass, isActive: true };
     const user = await userModel.create(payload);
     const token = await signJWT({ id: user?._id });
-
     res.status(200).send({
       success: true,
       msg: "user registration successful",
     });
   } catch (error: any) {
-    console.log(error?.message, error);
-    res.status(500).send({ success: false, msg: "Internal server error" });
+    appError(error, req, res, next);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const payload = req.body;
     const user: any = await userModel.find(
@@ -51,12 +51,11 @@ export const login = async (req: Request, res: Response) => {
       res.status(404).send({ success: false, msg: "Email id or password is not valid" });
     }
   } catch (error) {
-    // console.log(chalk.bgRed.bold(error?.message));
-    // res.status(500).send({ success: false, msg: error?.message });
+    appError(error, req, res, next);
   }
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const payload = req.body;
     const isValid: any = await verifyJWT(payload?.token);
@@ -73,7 +72,6 @@ export const resetPassword = async (req: Request, res: Response) => {
       res.status(402).send({ success: false, msg: "Invalid token" });
     }
   } catch (error) {
-    // console.log(chalk.bgRed.bold(error?.message));
-    // res.status(500).send({ success: false, msg: error?.message });
+    appError(error, req, res, next);
   }
 };
