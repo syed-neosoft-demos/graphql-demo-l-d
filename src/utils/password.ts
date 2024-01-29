@@ -1,9 +1,9 @@
-import hash from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 export const hashPassword = async (pass: string) => {
-  return await hash.hash(pass, 10);
+  return await bcrypt.hash(pass, 10);
 };
 
 export const verifyPassword = async (pass: string, hashPass: string) => {
-  return await hash.compare(pass, hashPass);
+  return await bcrypt.compare(pass, hashPass);
 };

@@ -1,13 +1,14 @@
-import { User } from "../../types/user.definition";
-import UserServices from "../services/user";
+import { Login, Signup } from "../../types/user.definition";
+import { createUser, getAllUser, getUser, userLogin } from "../services/user";
 
 const resolvers = {
   Query: {
-    getUser: async () => await UserServices.getUser(),
-    getAllUser: async () => await UserServices.getAllUser(),
+    getUser: async () => await getUser(),
+    getAllUser: async () => await getAllUser(),
   },
   Mutation: {
-    createUser: async (_: unknown, args: User) => await UserServices.createUser(args),
+    signup: async (_: unknown, args: Signup) => await createUser(args),
+    login: async (_: unknown, args: Login) => await userLogin(args),
   },
 };
 

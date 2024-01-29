@@ -10,7 +10,8 @@ const typeDefs = `#graphql
       getAllUser: [User]
     }
     type Mutation{
-       createUser(email: String!, username: String, fullName: String!, password: String!): String
+       signup(email: String!, username: String, fullName: String!, password: String!): String
+       login(email: String!, password: String!): String
     }
   `;
 export default typeDefs;
