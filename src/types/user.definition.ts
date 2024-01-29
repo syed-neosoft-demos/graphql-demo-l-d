@@ -1,5 +1,6 @@
 export type User = {
-  name: string;
+  userName: string;
   email: string;
+  fullName: String;
   password: string;
 };
