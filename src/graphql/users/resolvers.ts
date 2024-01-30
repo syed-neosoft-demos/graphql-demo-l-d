@@ -3,7 +3,6 @@ import { createUser, getAllUser, getUser, userLogin } from "../services/user";
 
 export const userQuery = {
   getUser: async (_: any, args: any, context: any) => {
-    console.log("context", context);
     return await getUser(context?.auth?.userId as string);
   },
   getAllUser: async () => await getAllUser(),
