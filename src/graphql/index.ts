@@ -2,14 +2,31 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { GraphQLError } from "graphql";
 import { verifyJWT } from "../utils/jwt";
-import userResolvers from "./users/resolvers";
-import userTypeDefs from "./users/typeDefs";
+
+import { UserResolvers } from "./users/resolvers";
+import { UserTypeDefs } from "./users/typeDefs";
 
 const startApollo = async (app: any) => {
   try {
     const server = new ApolloServer({
-      typeDefs: userTypeDefs,
-      resolvers: userResolvers,
+      typeDefs: `#graphql
+        ${UserTypeDefs.userTypes}
+
+        type Query {
+          ${UserTypeDefs.userQuery}
+        }
+        type Mutation {
+          ${UserTypeDefs.userMutation}
+        }
+      `,
+      resolvers: {
+        Query: {
+          ...UserResolvers.userQuery,
+        },
+        Mutation: {
+          ...UserResolvers.userMutation,
+        },
+      },
     });
     await server.start();
     app.use(
