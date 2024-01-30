@@ -5,18 +5,13 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 
 const security = (app: any) => {
-  const whitelist = ["http://localhost.com", "http://example2.com"];
-  const corsOptions = {
-    origin: function (origin: any, callback: any) {
-      console.log("origin", origin);
-      if (!origin || whitelist.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  };
-  app.use(cors(corsOptions as any));
+  const whitelist = ["http://localhost:3002", "http://localhost:3000"];
+  app.use(
+    cors({
+      origin: whitelist,
+      methods: "GET, POST, PUT, PATCH, DELETE",
+    })
+  );
   app.use(express.urlencoded({ extended: true, limit: "1024px" }));
 
   // RATE LIMITER: 300 REQ PER 10 MIN
@@ -29,7 +24,7 @@ const security = (app: any) => {
   app.use(limiter);
 
   // HTTP SECURITY HEADERS
-  app.use(helmet());
+  // app.use(helmet());
 
   // DATA SANITIZATION AGAINST NO-SQL QUERY INJECTION
   app.use(mongoSanitize());

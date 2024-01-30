@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 //production middleware
-// security(app);
+security(app);
 
 dbConnect();
 

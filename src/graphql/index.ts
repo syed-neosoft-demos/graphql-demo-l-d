@@ -16,19 +16,21 @@ const startApollo = async (app: any) => {
     await server.start();
     app.use(
       "/graphql",
-      expressMiddleware(server),
-      async (req: Request, res: Response, next: NextFunction) => {
-        // Middleware logic here
-        const token = req.headers["token"];
-        console.log("token", token);
-        try {
-          // const user = UserService.decodeJWTToken(token as string);
-          // req.user = user; // Set the user in the request for later use
-          next();
-        } catch (error) {
-          return res.status(401).json({ error: "Unauthorized" });
-        }
-      }
+      expressMiddleware(server, {
+        //@ts-expect-error
+        context: async ({ req }) => {
+          // Middleware logic here
+          try {
+            const token = req.headers["authorization"];
+            console.log("token", token);
+            // const user = UserService.decodeJWTToken(token as string);
+            // req.user = user; // Set the user in the request for later use
+            // next();
+          } catch (error) {
+            // return res.status(401).json({ error: "Unauthorized" });
+          }
+        },
+      })
     );
   } catch (error) {
     console.log("error", error);
