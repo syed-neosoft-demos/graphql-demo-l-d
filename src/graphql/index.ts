@@ -1,12 +1,10 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { NextFunction, Request, Response } from "express";
+import { GraphQLError } from "graphql";
+import { verifyJWT } from "../utils/jwt";
 import userResolvers from "./users/resolvers";
 import userTypeDefs from "./users/typeDefs";
 
-const authDemo = (param: any) => {
-  console.log("authDemo", authDemo);
-};
 const startApollo = async (app: any) => {
   try {
     const server = new ApolloServer({
@@ -17,18 +15,15 @@ const startApollo = async (app: any) => {
     app.use(
       "/graphql",
       expressMiddleware(server, {
-        //@ts-expect-error
-        context: async ({ req }) => {
-          // Middleware logic here
-          try {
-            const token = req.headers["authorization"];
-            console.log("token", token);
-            // const user = UserService.decodeJWTToken(token as string);
-            // req.user = user; // Set the user in the request for later use
-            // next();
-          } catch (error) {
-            // return res.status(401).json({ error: "Unauthorized" });
+        context: async ({ req, res }) => {
+          const token = req.headers["authorization"];
+          if (!token) {
+            throw new GraphQLError("Authorization token missing", {
+              extensions: { code: "UNAUTHORIZED" },
+            });
           }
+          const isAuth = await verifyJWT(token);
+          return { auth: isAuth };
         },
       })
     );

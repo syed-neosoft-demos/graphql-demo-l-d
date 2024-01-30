@@ -3,7 +3,10 @@ import { createUser, getAllUser, getUser, userLogin } from "../services/user";
 
 const resolvers = {
   Query: {
-    getUser: async () => await getUser(),
+    getUser: async (_: any, args: any, context: any) => {
+      console.log("context", context);
+      return await getUser(context?.auth?.userId as string);
+    },
     getAllUser: async () => await getAllUser(),
   },
   Mutation: {

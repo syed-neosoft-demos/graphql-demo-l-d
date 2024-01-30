@@ -6,7 +6,7 @@ const typeDefs = `#graphql
       fullName: String
     }
     type Query {
-      getUser: [User]
+      getUser: User
       getAllUser: [User]
     }
     type Mutation{

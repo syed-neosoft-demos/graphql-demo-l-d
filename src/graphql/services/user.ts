@@ -3,9 +3,10 @@ import { Login, Signup } from "../../types/user.definition";
 import { signJWT } from "../../utils/jwt";
 import { hashPassword, verifyPassword } from "../../utils/password";
 
-export const getUser = async () => {
+export const getUser = async (userId: string) => {
   try {
-    const users = await userModel.find({}).limit(20);
+    const users = await userModel.findOne({ _id: userId });
+    console.log("users", users);
     return users;
   } catch (error) {
     console.log("error", error);
