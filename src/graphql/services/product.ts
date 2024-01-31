@@ -1,9 +1,9 @@
 import productModel from "../../models/productModel";
 import { Create, Delete, Update } from "../../types/product.definition";
 
-export const getProduct = async (userId: string) => {
+export const getProduct = async (productId: string) => {
   try {
-    const product = await productModel.findOne({ _id: userId });
+    const product = await productModel.findOne({ _id: productId });
     console.log("product", product);
     return product;
   } catch (error) {

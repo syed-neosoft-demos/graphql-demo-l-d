@@ -1,25 +1,26 @@
-export const userTypes = `#graphql
+export const productTypes = `#graphql
     type Product {
       title: String
       description: String
-      price:Number
-      discountPercentage:Number
-      rating:Number
-      stock:Number
+      price:Int
+      discountPercentage:Int
+      rating:Int
+      stock:Int
       brand:String
       category:String
       thumbnail:String
       images:String
-     
     }
   `;
 
-export const userQuery = `#graphql
+export const productQuery = `#graphql
     getProduct: Product
     getAllProduct: [Product]
   `;
-export const userMutation = `#graphql
-    createProduct(email: String!, username: String, fullName: String!, password: String!): String
+export const productMutation = `#graphql
+    createProduct(title: String!, description: String!, price: Int!, discountPercentage:Int!, rating:Int!, stock:Int!, brand:String!,category:String!, thumbnail:String!, images:String! ): String
     updateProduct(email: String!, password: String!): String
     deleteProduct(email: String!, password: String!): String
   `;
+
+export const ProductTypeDefs = { productTypes, productQuery, productMutation };

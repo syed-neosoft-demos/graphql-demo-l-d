@@ -15,6 +15,7 @@ export const getUser = async (userId: string) => {
 export const getAllUser = async () => {
   try {
     const users = await userModel.find({}).limit(20);
+    console.log("users", users);
     return users;
   } catch (error) {
     console.log("error", error);

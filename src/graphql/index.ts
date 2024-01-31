@@ -3,6 +3,8 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { GraphQLError } from "graphql";
 import { verifyJWT } from "../utils/jwt";
 
+import { ProductResolvers } from "./products/resolvers";
+import { ProductTypeDefs } from "./products/typeDefs";
 import { UserResolvers } from "./users/resolvers";
 import { UserTypeDefs } from "./users/typeDefs";
 
@@ -11,20 +13,25 @@ const startApollo = async (app: any) => {
     const server = new ApolloServer({
       typeDefs: `#graphql
         ${UserTypeDefs.userTypes}
+        ${ProductTypeDefs.productTypes}       
 
         type Query {
           ${UserTypeDefs.userQuery}
+          ${ProductTypeDefs.productQuery}
         }
         type Mutation {
           ${UserTypeDefs.userMutation}
+          ${ProductTypeDefs.productMutation}
         }
       `,
       resolvers: {
         Query: {
           ...UserResolvers.userQuery,
+          ...ProductResolvers.productQuery,
         },
         Mutation: {
           ...UserResolvers.userMutation,
+          ...ProductResolvers.productMutation,
         },
       },
     });
@@ -34,13 +41,14 @@ const startApollo = async (app: any) => {
       expressMiddleware(server, {
         context: async ({ req, res }) => {
           const token = req.headers["authorization"];
-          if (!token) {
-            throw new GraphQLError("Authorization token missing", {
-              extensions: { code: "UNAUTHORIZED" },
-            });
-          }
-          const isAuth = await verifyJWT(token);
-          return { auth: isAuth };
+          // if (!token) {
+          // throw new GraphQLError("Authorization token missing", {
+          //   extensions: { code: "UNAUTHORIZED" },
+          // });
+          // }
+          // const isAuth = await verifyJWT(token);
+          // return { auth: isAuth };
+          return { token };
         },
       })
     );

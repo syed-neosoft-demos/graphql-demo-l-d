@@ -1,4 +1,5 @@
 import { Create, Delete, Update } from "../../types/product.definition";
+import { isAuthorized } from "../services/common";
 import {
   createProduct,
   deleteProduct,
@@ -7,16 +8,20 @@ import {
   updateProduct,
 } from "../services/product";
 
-export const userQuery = {
+export const productQuery = {
   getProduct: async (_: any, args: any, context: any) => {
-    return await getProduct(context?.auth?.userId as string);
+    await isAuthorized(context?.token);
+    return await getProduct(args?.productId as string);
   },
   getAllProduct: async () => await getAllProduct(),
 };
-export const userMutation = {
-  createProduct: async (_: unknown, args: Create) => await createProduct(args),
+export const productMutation = {
+  createProduct: async (_: unknown, args: Create, context: any) => {
+    await isAuthorized(context?.token);
+    return await createProduct(args);
+  },
   updateProduct: async (_: unknown, args: Update) => await updateProduct(args),
   deleteProduct: async (_: unknown, args: Delete) => await deleteProduct(args),
 };
 
-export const UserResolvers = { userQuery, userMutation };
+export const ProductResolvers = { productQuery, productMutation };
