@@ -2,6 +2,11 @@ import { model, Schema } from "mongoose";
 
 const productSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "users",
+      require: true,
+    },
     title: {
       type: String,
       require: true,

@@ -1,7 +1,8 @@
 export const productTypes = `#graphql
     type Product {
-      title: String
-      description: String
+      userId: String!
+      title: String!
+      description: String!
       price:Int
       discountPercentage:Int
       rating:Int
@@ -10,6 +11,7 @@ export const productTypes = `#graphql
       category:String
       thumbnail:String
       images:String
+      user: [User]
     }
   `;
 
@@ -18,7 +20,7 @@ export const productQuery = `#graphql
     getAllProduct: [Product]
   `;
 export const productMutation = `#graphql
-    createProduct(title: String!, description: String!, price: Int!, discountPercentage:Int!, rating:Int!, stock:Int!, brand:String!,category:String!, thumbnail:String!, images:String! ): String
+    createProduct( userId: String!, title: String!, description: String!, price: Int!, discountPercentage:Int!, rating:Int!, stock:Int!, brand:String!,category:String!, thumbnail:String!, images:String! ): String
     updateProduct(email: String!, password: String!): String
     deleteProduct(email: String!, password: String!): String
   `;
