@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import productModel from "../../models/productModel";
 import { Create, Delete, Update } from "../../types/product.definition";
 
@@ -6,16 +7,20 @@ export const getProduct = async (productId: string) => {
     const product = await productModel.findOne({ _id: productId });
     console.log("product", product);
     return product;
-  } catch (error) {
-    console.log("error", error);
+  } catch (error: any) {
+    throw new GraphQLError(error?.message, {
+      extensions: { code: "FAILEDTOFETCH" },
+    });
   }
 };
 export const getAllProduct = async () => {
   try {
     const products = await productModel.find({}).limit(20);
     return products;
-  } catch (error) {
-    console.log("error", error);
+  } catch (error: any) {
+    throw new GraphQLError(error?.message, {
+      extensions: { code: "FAILEDTOFETCH" },
+    });
   }
 };
 

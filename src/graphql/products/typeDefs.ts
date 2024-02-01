@@ -1,5 +1,6 @@
 export const productTypes = `#graphql
     type Product {
+      _id:String
       userId: String!
       title: String!
       description: String!
@@ -16,7 +17,7 @@ export const productTypes = `#graphql
   `;
 
 export const productQuery = `#graphql
-    getProduct: Product
+    getProduct(productId:String!): Product
     getAllProduct: [Product]
   `;
 export const productMutation = `#graphql
