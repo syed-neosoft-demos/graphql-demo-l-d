@@ -12,7 +12,7 @@ export const productTypes = `#graphql
       category:String
       thumbnail:String
       images:String
-      user: [User]
+      user: User
     }
   `;
 

@@ -25,6 +25,7 @@ const startApollo = async (app: any) => {
         }
       `,
       resolvers: {
+        ...ProductResolvers.productHelper,
         Query: {
           ...UserResolvers.userQuery,
           ...ProductResolvers.productQuery,

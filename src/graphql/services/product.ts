@@ -5,7 +5,6 @@ import { Create, Delete, Update } from "../../types/product.definition";
 export const getProduct = async (productId: string) => {
   try {
     const product = await productModel.findOne({ _id: productId });
-    console.log("product", product);
     return product;
   } catch (error: any) {
     throw new GraphQLError(error?.message, {
