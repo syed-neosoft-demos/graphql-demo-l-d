@@ -22,6 +22,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     res.status(200).send({
       success: true,
       msg: "user registration successful",
+      data: { token },
     });
   } catch (error: any) {
     appError(error, req, res, next);
@@ -33,7 +34,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const payload = req.body;
     const user: any = await userModel.find(
       { $or: [{ email: { $eq: payload?.email } }, { username: { $eq: payload?.email } }] },
-      { password: 1, is_active: 1 }
+      { password: 1, isActive: 1 }
     );
     if (user.length <= 0) {
       return res
@@ -46,7 +47,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const isValid = await verifyPassword(payload?.password, user?.[0].password);
     if (isValid) {
       const token = await signJWT({ id: user?.[0]?._id }, "4h");
-      res.status(200).send({ success: true, token, msg: "success" });
+      res.status(200).send({ success: true, msg: "success", data: { token } });
     } else {
       res.status(404).send({ success: false, msg: "Email id or password is not valid" });
     }

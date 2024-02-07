@@ -1,4 +1,3 @@
-import userModel from "../../models/userModel";
 import { Create, Delete, Update } from "../../types/product.definition";
 import { isAuthorized } from "../services/common";
 import {

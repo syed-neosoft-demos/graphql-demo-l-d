@@ -4,7 +4,7 @@ import appError from "./appError";
 
 export const signupValidate = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await signupPayload.validate(req?.body);
+    await signupPayload.validate({ body: req?.body });
     next();
   } catch (error) {
     appError(error, req, res, next);

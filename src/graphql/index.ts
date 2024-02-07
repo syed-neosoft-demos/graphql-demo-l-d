@@ -1,7 +1,5 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { GraphQLError } from "graphql";
-import { verifyJWT } from "../utils/jwt";
 
 import { ProductResolvers } from "./products/resolvers";
 import { ProductTypeDefs } from "./products/typeDefs";
